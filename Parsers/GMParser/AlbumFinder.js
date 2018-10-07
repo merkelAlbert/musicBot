@@ -1,7 +1,7 @@
 const httpService = require('../HttpService');
 
-const searchUrl = 'https://play.google.com/store/search?q=&c=music&hl=ru';
-const googleMusicPrefix = 'https://play.google.com';
+const SEARCHURL = 'https://play.google.com/store/search?q=&c=music&hl=ru';
+const GOOGLEMUSICPREFIX = 'https://play.google.com';
 
 const getAlbumsUrl = (doc) => {
     let urlItems = doc.getElementsByClassName('title-link id-track-click');
@@ -12,7 +12,7 @@ const getAlbumsUrl = (doc) => {
 
     for (let url of urls) {
         if (~url.indexOf('cluster:2')) {
-            return googleMusicPrefix + url;
+            return GOOGLEMUSICPREFIX + url;
         }
     }
     return '';
@@ -27,7 +27,7 @@ const getAlbums = (doc) => {
 
     [].forEach.call(albumsItems, el => {
         let album = {};
-        album.url = googleMusicPrefix
+        album.url = GOOGLEMUSICPREFIX
             + el.getElementsByClassName('card-click-target')[0].getAttribute('href')
         album.imageUrl = el.getElementsByClassName('cover-image')[0]
             .getAttribute('src').replace('w170', 'w480');
@@ -39,8 +39,8 @@ const getAlbums = (doc) => {
 };
 
 export const find = async (searchString) => {
-    let index = searchUrl.indexOf("q=") + 2;
-    let url = searchUrl.slice(0, index) + searchString + searchUrl.slice(index);
+    let index = SEARCHURL.indexOf("q=") + 2;
+    let url = SEARCHURL.slice(0, index) + searchString + SEARCHURL.slice(index);
     let doc = await httpService.makeRequest('get', encodeURI(url));
     if (doc !== null) {
         let albumsUrl = getAlbumsUrl(doc); //dont need encodeURI
