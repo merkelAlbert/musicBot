@@ -4,6 +4,10 @@ const request = require('request');
 const PATH = './FileServer/files/';
 
 export const save = (fileName, obj) => {
+
+    if (!fs.existsSync(PATH))
+        fs.mkdir(PATH, err => console.log(err));
+
     fs.writeFile(PATH + fileName + '.json', JSON.stringify(obj), (err => {
         if (err)
             console.log(err);
