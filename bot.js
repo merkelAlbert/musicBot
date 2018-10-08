@@ -26,24 +26,26 @@ const handleAlbum = async (ctx, albums, index) => {
     ]).extra());
 
     bot.action('download', async ctx => {
-        let tracks = await albumParser.getTracks(album.url);
+        const data = JSON.parse(await fileServer.get(ctx.from.id));
+        let tracks = await albumParser.getTracks(data.albums[data.index].url);
         tracks.forEach(async track => {
-            let url = await trackFinder.find(`${album.artist} ${track}`);
+            let url = await trackFinder.find(`${data.albums[data.index].artist} ${track}`);
             if (url !== '') {
                 ctx.replyWithAudio(url);
             }
-        })
+        });
+        await fileServer.remove(ctx.from.id);
     });
 
     bot.action('next', async ctx => {
         const data = JSON.parse(await fileServer.get(ctx.from.id));
         ctx.deleteMessage();
         if (data.index < data.albums.length - 1) {
-            fileServer.update(ctx.from.id, 'index', data.index + 1);
+            await fileServer.update(ctx.from.id, 'index', data.index + 1);
             data.index++;
         }
         else {
-            fileServer.update(ctx.from.id, 'index', 0);
+            await fileServer.update(ctx.from.id, 'index', 0);
             data.index = 0;
         }
         handleAlbum(ctx, data.albums, data.index + 1);
@@ -62,7 +64,7 @@ const loadAlbums = async (ctx) => {
             albums: albums,
             index: 0
         };
-        fileServer.save(ctx.from.id, obj);
+        await fileServer.save(ctx.from.id, obj);
 
         //выбираем нужный альбом
         handleAlbum(ctx, albums, 0);
@@ -70,8 +72,8 @@ const loadAlbums = async (ctx) => {
     else
         ctx.reply('Ничего не найдено');
 };
-bot.start((ctx) => {
-    fileServer.remove(ctx.from.id);
+bot.start(async (ctx) => {
+    await fileServer.remove(ctx.from.id);
     ctx.reply(`Привет ${ctx.from.first_name}, введите имя артиста или альбома`);
 });
 

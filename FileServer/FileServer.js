@@ -15,10 +15,10 @@ export const save = (fileName, obj) => {
 };
 
 export const get = (fileName) => {
-    return new Promise((resolve, reject) => fs.readFile(PATH + fileName + '.json', (err, data) => {
+    return new Promise((resolve) => fs.readFile(PATH + fileName + '.json', (err, data) => {
         if (err) {
             console.log(err);
-            reject(err);
+            throw new Error(err.message);
         }
         resolve(data);
     }));
@@ -30,7 +30,7 @@ export const update = async (fileName, field, value) => {
     save(fileName, obj);
 };
 
-export const remove = (fileName) => {
+export const remove = async (fileName) => {
     const file = PATH + fileName + '.json';
     fs.access(file, fs.constants.F_OK, err => {
         if (!err)

@@ -42,15 +42,17 @@ export const find = async (searchString) => {
     let index = SEARCHURL.indexOf("q=") + 2;
     let url = SEARCHURL.slice(0, index) + searchString + SEARCHURL.slice(index);
     let doc = await httpService.makeRequest('get', encodeURI(url));
-    if (doc !== null) {
-        let albumsUrl = getAlbumsUrl(doc); //dont need encodeURI
-        if (albumsUrl !== '') {
-            let albumsDoc = await httpService.makeRequest('get', albumsUrl);
-            if (albumsDoc !== null)
-                return new Promise(resolve => resolve(getAlbums(albumsDoc)));
-            else
-                return new Promise(resolve => resolve([]));
+    return new Promise(async resolve => {
+        if (doc !== null) {
+            let albumsUrl = getAlbumsUrl(doc); //dont need encodeURI
+            if (albumsUrl !== '') {
+                let albumsDoc = await httpService.makeRequest('get', albumsUrl);
+                if (albumsDoc !== null)
+                    return resolve(getAlbums(albumsDoc));
+                else
+                    return resolve([]);
+            }
         }
-    }
-    return new Promise(resolve => resolve([]));
+        return resolve([]);
+    })
 };
