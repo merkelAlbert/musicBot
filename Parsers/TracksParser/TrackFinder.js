@@ -22,11 +22,14 @@ const getTrack = (doc, {id}) => {
 export const find = async (searchString) => {
     let url = SEARCHURL + searchString;
     let doc = await httpService.makeRequest('get', encodeURI(url));
-    if (doc != null) {
-        let trackInfo = getTrackInfo(doc);
-        let trackDoc = await httpService.makeRequest('get', encodeURI(trackInfo.url));
-        if (trackDoc != null)
-            return getTrack(trackDoc, trackInfo);
-    }
-    return '';
+    return new Promise(async resolve => {
+
+        if (doc != null) {
+            let trackInfo = getTrackInfo(doc);
+            let trackDoc = await httpService.makeRequest('get', encodeURI(trackInfo.url));
+            if (trackDoc != null)
+                return resolve(getTrack(trackDoc, trackInfo));
+        }
+        return resolve('');
+    });
 };
