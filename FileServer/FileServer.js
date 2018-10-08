@@ -32,13 +32,18 @@ export const update = async (fileName, field, value) => {
 
 export const remove = async (fileName) => {
     const file = PATH + fileName + '.json';
-    fs.access(file, fs.constants.F_OK, err => {
-        if (!err)
-            fs.unlink(file, (err => {
-                if (err)
-                    console.log(err);
-            }));
+    return new Promise(resolve => {
+        fs.access(file, fs.constants.F_OK, err => {
+            if (!err)
+                fs.unlink(file, (err => {
+                    if (err)
+                        console.log(err);
+                    resolve();
+                }));
+            resolve();
+        });
     });
+
 };
 
 /*

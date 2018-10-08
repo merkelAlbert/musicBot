@@ -5,13 +5,16 @@ const PREFIX = 'http://myzcloud.me';
 
 const getTrackInfo = (doc) => {
     let playlist = doc.getElementsByClassName('playlist playlist--hover')[0];
-    let track = playlist.getElementsByClassName('playlist__item')[0];
-    let id = track.getAttribute('id').match(/\d+/g);
-    let url = track.getElementsByClassName('dl-song')[0].getAttribute('href');
-    return {
-        url: PREFIX + url,
-        id: id
-    };
+    if (playlist !== undefined) {
+        let track = playlist.getElementsByClassName('playlist__item')[0];
+        let id = track.getAttribute('id').match(/\d+/g);
+        let url = track.getElementsByClassName('dl-song')[0].getAttribute('href');
+        return {
+            url: PREFIX + url,
+            id: id
+        };
+    }
+    return null;
 };
 
 const getTrack = (doc, {id}) => {
@@ -23,12 +26,13 @@ export const find = async (searchString) => {
     let url = SEARCHURL + searchString;
     let doc = await httpService.makeRequest('get', encodeURI(url));
     return new Promise(async resolve => {
-
         if (doc != null) {
             let trackInfo = getTrackInfo(doc);
-            let trackDoc = await httpService.makeRequest('get', encodeURI(trackInfo.url));
-            if (trackDoc != null)
-                return resolve(getTrack(trackDoc, trackInfo));
+            if (trackInfo != null) {
+                let trackDoc = await httpService.makeRequest('get', encodeURI(trackInfo.url));
+                if (trackDoc != null)
+                    return resolve(getTrack(trackDoc, trackInfo));
+            }
         }
         return resolve('');
     });
