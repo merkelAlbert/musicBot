@@ -27,7 +27,7 @@ const getTrackInfo = (doc) => {
 
 const getTrack = (doc, {id}) => {
     let link = doc.getElementById(`dl_${id}`);
-    if (link !== undefined) {
+    if (link !== null) {
         let url = link.getAttribute('href');
         return PREFIX + url;
     }
