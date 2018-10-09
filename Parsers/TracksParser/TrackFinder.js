@@ -31,7 +31,6 @@ const getTrack = (doc, {id}) => {
         let url = link.getAttribute('href');
         return PREFIX + url;
     }
-    let url = doc.getElementById(`dl_${id}`).getAttribute('href');
     return PREFIX + url;
 };
 
