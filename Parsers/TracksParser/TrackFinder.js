@@ -31,7 +31,6 @@ const getTrack = (doc, {id}) => {
         let url = link.getAttribute('href');
         return PREFIX + url;
     }
-    return PREFIX + url;
 };
 
 export const find = async (searchString) => {
