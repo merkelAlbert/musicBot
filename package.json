@@ -1,0 +1,31 @@
+{
+  "name": "musicbot",
+  "version": "1.0.0",
+  "engines": {
+    "node": "10.11.0"
+  },
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node index.js --presets env",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "dotenv": "^6.0.0",
+    "download-file": "^0.1.5",
+    "express": "^4.16.3",
+    "https-proxy-agent": "^2.2.1",
+    "jsdom": "^12.1.0",
+    "needle": "^2.2.4",
+    "request": "latest",
+    "telegraf": "^3.24.0",
+    "telegraf-session-local": "0.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}
