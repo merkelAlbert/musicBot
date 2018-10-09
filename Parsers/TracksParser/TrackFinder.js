@@ -15,6 +15,12 @@ const getTrackInfo = (doc) => {
                 id: id
             };
         }
+        let id = track.getAttribute('id').match(/\d+/g);
+        let url = track.getElementsByClassName('dl-song')[0].getAttribute('href');
+        return {
+            url: PREFIX + url,
+            id: id
+        };
     }
     return null;
 };
@@ -25,6 +31,8 @@ const getTrack = (doc, {id}) => {
         let url = link.getAttribute('href');
         return PREFIX + url;
     }
+    let url = doc.getElementById(`dl_${id}`).getAttribute('href');
+    return PREFIX + url;
 };
 
 export const find = async (searchString) => {
