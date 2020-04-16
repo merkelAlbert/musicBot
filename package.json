@@ -18,7 +18,7 @@
     "dotenv": "^6.0.0",
     "download-file": "^0.1.5",
     "express": "^4.16.3",
-    "https-proxy-agent": "^2.2.1",
+    "https-proxy-agent": "^2.2.3",
     "jsdom": "^12.1.0",
     "needle": "^2.2.4",
     "request": "latest",
